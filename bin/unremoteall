@@ -5,7 +5,10 @@
 set -e
 
 dir="${HOME}/git/@thekhanj"
-find "$dir" -mindepth 1 -maxdepth 1 -type d |
+{
+	find "$dir" -mindepth 1 -maxdepth 1 -type d
+	echo "${HOME}/dotfiles"
+} |
 	while read -r repo; do
 		pushd "${repo}"
 		git remote remove origin || true
