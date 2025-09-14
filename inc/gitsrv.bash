@@ -39,10 +39,10 @@ if [ -z "$_INC_GITSRV" ]; then
 
 		_user_check || return 1
 
-		cat hooks/post-recieve |
+		cat hooks/post-receive |
 			sed "s|{{MIRROR}}|git@github.com:${github}|" \
-				>"$dir/hooks/post-recieve"
-		chmod +x "$dir/hooks/post-recieve"
+				>"$dir/hooks/post-receive"
+		chmod +x "$dir/hooks/post-receive"
 	}
 
 	_gitsrv_init() {
