@@ -2,7 +2,10 @@
 
 set -e
 
+. 'inc/user.bash'
 . 'inc/github.bash'
+
+_user_check
 
 clone() {
 	_github_clone_all
