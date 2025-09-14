@@ -14,12 +14,12 @@ if [ -z "$_INC_GITSRV" ]; then
 			dir="/mnt/purple/srv/git"
 			;;
 		*)
-			echo "gitsrv: host \"$(hostname)\" does not support syncing" >&2
+			echo "gitsrv: error: host \"$(hostname)\" does not support syncing" >&2
 			return 1
 			;;
 		esac
 
-		rsync -avt git@thekhanj.ir:. "$dir" --info=progress2
+		rsync -avt --delete git@thekhanj.ir:. "$dir" --info=progress2
 	}
 
 	_gitsrv_init() {
