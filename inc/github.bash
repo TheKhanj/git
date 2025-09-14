@@ -29,7 +29,8 @@ if [ -z "$_INC_GITHUB" ]; then
 		local concurrency="${1:-10}"
 
 		if ! [ -d "/srv/git" ]; then
-			mkdir -p "/srv/git"
+			echo "error: directory /srv/git does not exist: run \"gitsrv init\" first" >&2
+			return 1
 		fi
 
 		# shellcheck disable=SC2016

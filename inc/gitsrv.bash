@@ -7,11 +7,34 @@ if [ -z "$_INC_GITSRV" ]; then
 
 	_gitsrv_init() {
 		useradd -m -s /bin/bash || true
-		su - git <<-EOF
-			cd "\$HOME"
-			mkdir -p .ssh
-			echo '$(cat conf/authorized_keys)' > .ssh/authorized_keys
-			chmod 644 .ssh/authorized_keys
-		EOF
+
+		local dir
+		local file
+
+		dir="/home/git/.ssh"
+		if ! [ -d "$dir" ]; then
+			mkdir -p "$dir"
+			chown git:git "$dir"
+			chmod 755 "$dir"
+		fi
+
+		file="/home/git/.ssh/authorized_keys"
+		cp conf/authorized_keys "$file"
+		chown git:git "$file"
+		chmod 644 "$file"
+
+		dir="/srv/git"
+		if ! [ -d "$dir" ]; then
+			mkdir -p "/srv/git"
+			chown git:git "$dir"
+			chmod 755 "$dir"
+		fi
+
+		dir="/home/git/@git"
+		if ! [ -d "$dir" ]; then
+			ln -s /srv/git/thekhanj/git /home/git/@git
+			chown git:git "$dir"
+			chmod 755 "$dir"
+		fi
 	}
 fi
