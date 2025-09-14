@@ -36,7 +36,8 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_clone_all() {
 		local concurrency="${1:-10}"
 
-		_user_check
+		_user_check || return 1
+
 		_github_trust
 		# shellcheck disable=SC2016
 		_github_list_repos |
@@ -56,7 +57,8 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_pull_all() {
 		local concurrency="${1:-10}"
 
-		_user_check
+		_user_check || return 1
+
 		_github_trust
 		# shellcheck disable=SC2016
 		_gitsrv_list_repos |
@@ -70,7 +72,7 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_push_all() {
 		local concurrency="${1:-10}"
 
-		_user_check
+		_user_check || return 1
 		_github_trust
 		# shellcheck disable=SC2016
 		_gitsrv_list_repos |

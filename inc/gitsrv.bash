@@ -22,6 +22,28 @@ if [ -z "$_INC_GITSRV" ]; then
 		rsync -avt --delete git@thekhanj.ir:. "$dir" --info=progress2
 	}
 
+	_gitsrv_new() {
+		local github="$1" local path="$2"
+
+		_user_check || return 1
+
+		local dir="${path}.git"
+		git init --bare "$dir"
+
+		_gitsrv_set_hooks "$github" "$dir"
+	}
+
+	_gitsrv_set_hooks() {
+		local github="$1"
+		local dir="$2"
+
+		_user_check || return 1
+
+		cat hooks/post-recieve |
+			sed "s/{{MIRROR}}/git@github.com:${github}/" \
+				>"$dir/hooks/post-recieve"
+	}
+
 	_gitsrv_init() {
 		useradd -m -s /bin/bash git || true
 
@@ -58,6 +80,28 @@ if [ -z "$_INC_GITSRV" ]; then
 			EOF
 			chown git:git "$file"
 			chmod 600 "$file"
+		fi
+	}
+
+	_gitsrv_validate_github() {
+		local github="$1"
+
+		if [ -z "$github" ]; then
+			echo "gitsrv: invalid invokation: github argument is required" >&2
+			return 1
+		fi
+		if ! grep '[^/]*/[^/]*' >/dev/null <<<"$github"; then
+			echo "gitsrv: invalid github path: \"$github\"" >&2
+			return 1
+		fi
+	}
+
+	_gitsrv_validate_path() {
+		local path="$1"
+
+		if [ -z "$path" ]; then
+			echo "gitsrv: invalid invokation: path argument is required" >&2
+			return 1
 		fi
 	}
 fi

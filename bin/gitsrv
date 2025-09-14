@@ -12,4 +12,38 @@ rsync() {
 	_gitsrv_rsync_all
 }
 
+#
+# Create a new git repository with a github mirror
+#
+# Example:
+#   gitsrv new @thekhanj/repo thekhanj/public/repo
+#
+new() {
+	local github="$1"
+	local path="$2"
+
+	_gitsrv_validate_github "$github" &&
+		_gitsrv_validate_path "$path" ||
+		return 1
+
+	_gitsrv_new "$github" "$path"
+}
+
+set_hooks() {
+	local github="$1"
+	local path="$2"
+
+	_gitsrv_validate_github "$github" &&
+		_gitsrv_validate_path "$path" ||
+		return 1
+
+	local dir="${path}.git"
+	if [ -d "$dir" ]; then
+		echo "gitsrv: directory doesn't exist: $dir" >&2
+		return 1
+	fi
+
+	_gitsrv_set_hooks "$github" "$dir"
+}
+
 "$@"
