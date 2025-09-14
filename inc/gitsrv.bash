@@ -40,7 +40,7 @@ if [ -z "$_INC_GITSRV" ]; then
 		_user_check || return 1
 
 		cat hooks/post-recieve |
-			sed "s/{{MIRROR}}/git@github.com:${github}/" \
+			sed "s|{{MIRROR}}|git@github.com:${github}|" \
 				>"$dir/hooks/post-recieve"
 	}
 
