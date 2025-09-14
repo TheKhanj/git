@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+. 'inc/github.bash'
+
+clone() {
+	_github_clone_all
+}
+
+pull() {
+	_github_pull_all
+}
+
+push() {
+	_github_push_all
+}
+
+"$@"
