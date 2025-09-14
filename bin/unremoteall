@@ -13,5 +13,6 @@ dir="${HOME}/git/@thekhanj"
 		pushd "${repo}"
 		git remote remove origin || true
 		git remote remove mine || true
+		git remote remove dev || true
 		popd
 	done
