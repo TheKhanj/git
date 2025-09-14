@@ -31,13 +31,11 @@ new() {
 
 set_hooks() {
 	local github="$1"
-	local path="$2"
+	local dir="$2"
 
 	_gitsrv_validate_github "$github" &&
-		_gitsrv_validate_path "$path" ||
 		return 1
 
-	local dir="${path}.git"
 	if [ -d "$dir" ]; then
 		echo "gitsrv: directory doesn't exist: $dir" >&2
 		return 1
