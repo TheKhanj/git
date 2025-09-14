@@ -7,6 +7,21 @@ if [ -z "$_INC_GITSRV" ]; then
 		find /home/git | grep '\.git$' | sed 's/\.git$//'
 	}
 
+	_gitsrv_rsync_all() {
+		local dir
+		case "$(hostname)" in
+		'black')
+			dir="/mnt/purple/srv/git"
+			;;
+		*)
+			echo "gitsrv: host \"$(hostname)\" does not support syncing" >&2
+			return 1
+			;;
+		esac
+
+		rsync -avt git@thekhanj.ir:. "$dir" --info=progress2
+	}
+
 	_gitsrv_init() {
 		useradd -m -s /bin/bash git || true
 

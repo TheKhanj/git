@@ -8,4 +8,8 @@ init() {
 	_gitsrv_init
 }
 
+rsync() {
+	_gitsrv_rsync_all
+}
+
 "$@"
