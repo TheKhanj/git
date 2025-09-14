@@ -2,6 +2,7 @@ if [ -z "$_INC_GITHUB" ]; then
 	_INC_GITHUB=1
 
 	. 'inc/ssh.bash'
+	. 'inc/user.bash'
 	. 'inc/gitsrv.bash'
 
 	_github_list_repos() {
@@ -35,18 +36,14 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_clone_all() {
 		local concurrency="${1:-10}"
 
-		if ! [ -d "/srv/git" ]; then
-			echo "error: github: directory /srv/git does not exist: run \"gitsrv init\" first" >&2
-			return 1
-		fi
-
+		_user_check
 		_github_trust
 		# shellcheck disable=SC2016
 		_github_list_repos |
 			parallel -j "$concurrency" '
 				repo_url={}
 				repo_name=$(basename "$repo_url" .git)
-				target="/srv/git/$repo_name"
+				target="/home/git/$repo_name"
 				if [ ! -d "$target" ]; then
 						echo "info: github: cloning $repo_url into $target" >&2
 						git clone "$repo_url" "$target"
@@ -59,6 +56,7 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_pull_all() {
 		local concurrency="${1:-10}"
 
+		_user_check
 		_github_trust
 		# shellcheck disable=SC2016
 		_gitsrv_list_repos |
@@ -72,6 +70,7 @@ if [ -z "$_INC_GITHUB" ]; then
 	_github_push_all() {
 		local concurrency="${1:-10}"
 
+		_user_check
 		_github_trust
 		# shellcheck disable=SC2016
 		_gitsrv_list_repos |
