@@ -1,1 +1,1 @@
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICtZwAODBzGbFxaZhzqoCJz7ozdcocsLn4Ypyzgq/Th+ gitsrv
+command="GIT_PROJECT_ROOT=/srv/git /usr/bin/git-shell -c \"$SSH_ORIGINAL_COMMAND\"" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICtZwAODBzGbFxaZhzqoCJz7ozdcocsLn4Ypyzgq/Th+ lucy
