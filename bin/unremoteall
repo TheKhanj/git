@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Just a tool to remove github remote from all local repositories
+
+set -e
+
+dir="${HOME}/git/@thekhanj"
+find "$dir" -mindepth 1 -maxdepth 1 -type d |
+	while read -r repo; do
+		pushd "${repo}"
+		git remote remove origin || true
+		git remote remove mine || true
+		popd
+	done
