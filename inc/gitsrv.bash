@@ -90,7 +90,7 @@ if [ -z "$_INC_GITSRV" ]; then
 			echo "gitsrv: invalid invokation: github argument is required" >&2
 			return 1
 		fi
-		if ! grep '^[^/]+/[^/]+$' >/dev/null <<<"$github"; then
+		if ! grep '^[^/]\+/[^/]\+$' >/dev/null <<<"$github"; then
 			echo "gitsrv: invalid github path: \"$github\"" >&2
 			return 1
 		fi
