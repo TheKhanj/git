@@ -46,7 +46,7 @@ if [ -z "$_INC_GITHUB" ]; then
 				target="/home/git/$repo_name"
 				if [ ! -d "$target" ]; then
 						echo "info: github: cloning $repo_url into $target" >&2
-						git clone "$repo_url" "$target"
+						git clone "$repo_url" "$target" --bare
 				else
 						echo "info: github: $target already exists, skipping" >&2
 				fi
