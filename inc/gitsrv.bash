@@ -36,5 +36,12 @@ if [ -z "$_INC_GITSRV" ]; then
 			chown git:git "$dir"
 			chmod 755 "$dir"
 		fi
+
+		file="/home/git/.ssh/github"
+		if ! [ -f "$file" ]; then
+			ssh-keygen -t ed25519 -C "github" -f "$file"
+			chown git:git "$file" "${file}.pub"
+			echo "warning: don't forget to add public key to github: ${file}.pub"
+		fi
 	}
 fi
