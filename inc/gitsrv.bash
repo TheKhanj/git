@@ -41,7 +41,7 @@ if [ -z "$_INC_GITSRV" ]; then
 		if ! [ -f "$file" ]; then
 			ssh-keygen -t ed25519 -C "github" -f "$file"
 			chown git:git "$file" "${file}.pub"
-			echo "warning: don't forget to add public key to github: ${file}.pub"
+			echo "warning: gitsrv: don't forget to add public key to github: ${file}.pub" >&2
 		fi
 	}
 fi

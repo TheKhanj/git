@@ -1,18 +1,25 @@
 if [ -z "$_INC_GITHUB" ]; then
 	_INC_GITHUB=1
 
+	. 'inc/ssh.bash'
 	. 'inc/gitsrv.bash'
-
-	PAT='some shit, my mistake, i will fix it in future :), technically i am from future right now 😱'
-	USERNAME=thekhanj
 
 	_github_list_repos() {
 		local page=1
 		local repos
 
+		if [ -z "$GITHUB_USERNAME" ]; then
+			echo "error: github: GITHUB_USERNAME is not set" >&2
+			return 1
+		fi
+		if [ -z "$GITHUB_PAT" ]; then
+			echo "error: github: GITHUB_PAT is not set" >&2
+			return 1
+		fi
+
 		while :; do
 			repos=$(
-				curl -s -u "$USERNAME:$PAT" \
+				curl -s -u "$GITHUB_USERNAME:$GITHUB_PAT" \
 					"https://api.github.com/user/repos?per_page=100&page=$page" |
 					jq -r '.[].ssh_url' |
 					grep -i '^git@github.com:thekhanj'
@@ -29,10 +36,11 @@ if [ -z "$_INC_GITHUB" ]; then
 		local concurrency="${1:-10}"
 
 		if ! [ -d "/srv/git" ]; then
-			echo "error: directory /srv/git does not exist: run \"gitsrv init\" first" >&2
+			echo "error: github: directory /srv/git does not exist: run \"gitsrv init\" first" >&2
 			return 1
 		fi
 
+		_github_trust
 		# shellcheck disable=SC2016
 		_github_list_repos |
 			parallel -j "$concurrency" '
@@ -40,18 +48,19 @@ if [ -z "$_INC_GITHUB" ]; then
 				repo_name=$(basename "$repo_url" .git)
 				target="/srv/git/$repo_name"
 				if [ ! -d "$target" ]; then
-						echo "Cloning $repo_url into $target"
+						echo "info: github: cloning $repo_url into $target" >&2
 						git clone "$repo_url" "$target"
 				else
-						echo "$target already exists, skipping"
+						echo "info: github: $target already exists, skipping" >&2
 				fi
 			'
 	}
 
-	# shellcheck disable=SC2016
 	_github_pull_all() {
 		local concurrency="${1:-10}"
 
+		_github_trust
+		# shellcheck disable=SC2016
 		_gitsrv_list_repos |
 			parallel -j "$concurrency" '
 				dir={}
@@ -60,15 +69,20 @@ if [ -z "$_INC_GITHUB" ]; then
 			'
 	}
 
-	# shellcheck disable=SC2016
 	_github_push_all() {
 		local concurrency="${1:-10}"
 
+		_github_trust
+		# shellcheck disable=SC2016
 		_gitsrv_list_repos |
 			parallel -j "$concurrency" '
 				dir={}
 				cd "$dir"
 				git push
 			'
+	}
+
+	_github_trust() {
+		_ssh_trust "github.com"
 	}
 fi
