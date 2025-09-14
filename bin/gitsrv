@@ -2,6 +2,7 @@
 
 set -e
 
+. 'inc/user.bash'
 . 'inc/gitsrv.bash'
 
 init() {
@@ -42,6 +43,24 @@ set_hooks() {
 	fi
 
 	_gitsrv_set_hooks "$github" "$dir"
+}
+
+set_all_hooks() {
+	_user_check || return 1
+
+	find /home/git |
+		grep '\.git$' |
+		while read -r line; do
+			pushd "$line" || break
+			github="$(
+				git remote -v |
+					grep fetch |
+					awk '{ print $2 }' |
+					cut -d: -f2
+			)"
+			popd || break
+			./bin/gitsrv set_hooks "$github" "$line" || break
+		done
 }
 
 "$@"
