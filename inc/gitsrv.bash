@@ -6,7 +6,7 @@ if [ -z "$_INC_GITSRV" ]; then
 	}
 
 	_gitsrv_init() {
-		useradd -m -s /bin/bash || true
+		useradd -m -s /bin/bash git || true
 
 		local dir
 		local file
