@@ -42,6 +42,7 @@ if [ -z "$_INC_GITSRV" ]; then
 		cat hooks/post-recieve |
 			sed "s|{{MIRROR}}|git@github.com:${github}|" \
 				>"$dir/hooks/post-recieve"
+		chmod +x "$dir/hooks/post-recieve"
 	}
 
 	_gitsrv_init() {
