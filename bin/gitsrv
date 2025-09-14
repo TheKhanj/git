@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+. 'inc/gitsrv.bash'
+
+init() {
+	_gitsrv_init
+}
+
+"$@"
