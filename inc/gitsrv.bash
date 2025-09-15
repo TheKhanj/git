@@ -76,7 +76,6 @@ if [ -z "$_INC_GITSRV" ]; then
 		if ! [ -f "$file" ]; then
 			tee "$file" >/dev/null <<-EOF
 				Host github.com
-				    HostName github.com
 				    User git
 				    IdentityFile ~/.ssh/id_ed25519_github
 			EOF
