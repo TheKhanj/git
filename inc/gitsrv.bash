@@ -23,7 +23,8 @@ if [ -z "$_INC_GITSRV" ]; then
 	}
 
 	_gitsrv_new() {
-		local github="$1" local path="$2"
+		local github="$1"
+		local path="$2"
 
 		_user_check || return 1
 
@@ -81,6 +82,21 @@ if [ -z "$_INC_GITSRV" ]; then
 			EOF
 			chown git:git "$file"
 			chmod 600 "$file"
+		fi
+
+		if ! [ -f "/usr/bin/git-lfs" ]; then
+			apt install -y git-lfs
+		fi
+
+		if ! [ -f "/usr/bin/go" ]; then
+			apt install -y golang
+		fi
+
+		git-lfs install --system
+
+		if ! [ -f "/usr/bin/git-lfs-transfer" ]; then
+			go install github.com/charmbracelet/git-lfs-transfer@latest &&
+				cp "${HOME}/go/bin/git-lfs-transfer" /usr/bin
 		fi
 	}
 
