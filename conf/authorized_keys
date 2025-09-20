@@ -2,3 +2,5 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICtZwAODBzGbFxaZhzqoCJz7ozdcocsLn4Ypyzgq/Th+
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0a93oHqrUrGZYUfj5JhNXu0o3OOvwG2gLnjhUkPENE black
 # TODO: limit access to certain repositories
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHOHgoBRsJjFpDApijcaMgzxyZGUugqKjjJwtzZy55VO santa
+# TODO: limit access to certain repositories
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYlBtJ0BVOoC2xizsEHm8uSAHD40z3k2OgQEjyuutXd lana-ir
